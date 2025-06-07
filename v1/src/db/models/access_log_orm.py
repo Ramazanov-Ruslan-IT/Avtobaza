@@ -1,7 +1,7 @@
 """access_logs - Фиксирует все попытки входа в систему: время входа/выхода, IP, устройство, успешность. Используется для безопасности и расследований."""
 from datetime import datetime
 
-from sqlalchemy import String, Boolean, DateTime, ForeignKey, UniqueConstraint, Index
+from sqlalchemy import String, Boolean, DateTime, ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column
 
 from v1.src.db.models.base_orm import BaseOrm

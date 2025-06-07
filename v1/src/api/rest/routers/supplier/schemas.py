@@ -39,7 +39,7 @@ class SupplierResponseSchema3(SupplierResponseSchema1): pass
 class SupplierResponseSchema4(SupplierResponseSchema1): pass
 
 # Список поставщиков (list)
-SupplierListSchema = list["SupplierResponseSchema1"]
+SupplierListSchema = list[SupplierResponseSchema1]
 
 # Массовое создание/обновление/удаление
 class SupplierBatchOperationSchema(BaseModel):

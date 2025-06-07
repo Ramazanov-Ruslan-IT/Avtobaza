@@ -38,7 +38,7 @@ class AutobaseResponseSchema2(AutobaseResponseSchema1): pass
 class AutobaseResponseSchema3(AutobaseResponseSchema1): pass
 class AutobaseResponseSchema4(AutobaseResponseSchema1): pass
 # Список автобаз
-AutobaseListSchema = list["AutobaseResponseSchema1"]
+AutobaseListSchema = list[AutobaseResponseSchema1]
 
 # Поиск по имени/адресу/координатам
 class AutobaseSearchSchema(BaseModel):
@@ -49,7 +49,7 @@ class AutobaseSearchSchema(BaseModel):
     lon_from: float | None = None
     lon_to: float | None = None
     model_config = ConfigDict(from_attributes=True)
-AutobaseSearchListSchema = list["AutobaseResponseSchema1"]
+AutobaseSearchListSchema = list[AutobaseResponseSchema1]
 
 # Статистика по автобазе
 class AutobaseStatsSchema(BaseModel):
