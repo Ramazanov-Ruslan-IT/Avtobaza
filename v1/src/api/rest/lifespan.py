@@ -10,7 +10,7 @@ from v1.src.api.rest.routers.base_router import base_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
-        print("Machine Service REST API started")
+        print("Avtobase Service REST API started")
         yield
     except Exception as e:
         print(e)

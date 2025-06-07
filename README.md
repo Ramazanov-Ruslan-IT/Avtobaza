@@ -749,7 +749,7 @@
 
 ### Команды для запуска сервиса локально
 ```shell
-cd example_service
+cd Avtobaza
 ```
 ```shell
 python .\v1\src\main.py  
@@ -759,12 +759,12 @@ python .\v1\src\main.py
 
 ### Команды для запуска сервиса на базе Docker
 ```shell
-cd example_service
+cd Avtobaza
 ```
 ```shell
-docker build -t example_service .
+docker build -t avtobaze_service .
 ```
 ```shell
-docker run --name example_service_container --privileged --cap-add=NET_ADMIN --cap-add=SYS_MODULE --dns=8.8.8.8 -p 8000:8000 example_service
+docker run --name avtobaza_service_container --privileged --cap-add=NET_ADMIN --cap-add=SYS_MODULE --dns=8.8.8.8 -p 8000:8000 avtobaza_service
 ```
 

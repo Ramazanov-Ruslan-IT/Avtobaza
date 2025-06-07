@@ -8,7 +8,7 @@ def run_api():
 
 
 def main():
-    sys.path.insert(0, "C:/Users/ramaz/Development/PetProjects/testarch")
+    sys.path.insert(0, "C:/Users/ramaz/Development/MIREA/avtobase/v1/src")
 
     api_proc = multiprocessing.Process(target=run_api)
     api_proc.start()

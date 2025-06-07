@@ -37,3 +37,11 @@ class UserResponseSchema1(BaseModel):
 class UserResponseSchema2(UserResponseSchema1): pass
 class UserResponseSchema3(UserResponseSchema1): pass
 class UserResponseSchema4(UserResponseSchema1): pass
+
+class ChangePasswordSchema(BaseModel):
+    old_password: str
+    new_password: str
+
+class BatchUpdateRoleSchema(BaseModel):
+    user_ids: list[str]
+    new_role_id: int
