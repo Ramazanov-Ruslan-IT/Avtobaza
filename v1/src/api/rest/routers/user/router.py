@@ -72,7 +72,7 @@ async def delete_user(
         raise_500(data={"errors": str(e)})
 
 
-@router.get("/list", response_model=list[UserResponseSchema1], summary="Получить список всех пользователей")
+@api_get(router, "/list", list[UserResponseSchema1], summary="Получить список всех пользователей")
 async def list_users(
     skip: int = Query(0, description="Сколько пропустить"),
     limit: int = Query(10, description="Сколько вернуть"),
@@ -91,12 +91,11 @@ async def list_users(
     ]
 
 
-@router.get("/profile/{user_id}", response_model=UserResponseSchema1, summary="Получить профиль пользователя по ID")
+@api_get(router, "/profile/{user_id}", UserResponseSchema1, summary="Получить профиль пользователя по ID")
 async def get_user_profile(
     user_id: str = Path(..., description="ID пользователя"),
     user_service: AbsUserService = Depends(get_user_service),
 ):
-    # Заглушка: вернуть фейковый профиль
     return UserResponseSchema1(
         id=user_id,
         email=f"profile_{user_id}@test.com",
@@ -106,16 +105,16 @@ async def get_user_profile(
     )
 
 
-@router.post("/{user_id}/change-password", status_code=status.HTTP_204_NO_CONTENT, summary="Сменить пароль пользователя")
+@api_post(router, "/{user_id}/change-password", dict, summary="Сменить пароль пользователя")
 async def change_user_password(
     user_id: str = Path(..., description="ID пользователя"),
     body: ChangePasswordSchema = Body(...),
     user_service: AbsUserService = Depends(get_user_service),
 ):
-    return
+    return None
 
 
-@router.put("/batch-update-role", response_model=list[UserResponseSchema1], summary="Массовое обновление ролей пользователей")
+@api_put(router, "/batch-update-role", list[UserResponseSchema1], summary="Массовое обновление ролей пользователей")
 async def batch_update_user_role(
     data: BatchUpdateRoleSchema = Body(...),
     user_service: AbsUserService = Depends(get_user_service),
@@ -131,7 +130,7 @@ async def batch_update_user_role(
     ]
 
 
-@router.get("/search", response_model=list[UserResponseSchema1], summary="Поиск пользователей по email/ФИО")
+@api_get(router, "/search", list[UserResponseSchema1], summary="Поиск пользователей по email/ФИО")
 async def search_users(
     query: str = Query(..., description="Поисковый запрос (email или ФИО)"),
     user_service: AbsUserService = Depends(get_user_service),
@@ -154,7 +153,7 @@ async def search_users(
     ]
 
 
-@router.post("/login", response_model=UserResponseSchema1, summary="Авторизация пользователя")
+@api_post(router, "/login", UserResponseSchema1, summary="Авторизация пользователя")
 async def login_user(
     email: str = Body(...),
     password: str = Body(...),

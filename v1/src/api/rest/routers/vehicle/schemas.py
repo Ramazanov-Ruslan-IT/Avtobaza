@@ -1,5 +1,7 @@
+from typing import List, Optional
 from pydantic import BaseModel, ConfigDict
 
+# --- CRUD-схемы ---
 class VehicleCreateSchema(BaseModel):
     license_plate: str
     brand: str
@@ -10,7 +12,6 @@ class VehicleCreateSchema(BaseModel):
     autobase_id: str
     status: str
     mileage: float
-
     model_config = ConfigDict(from_attributes=True)
 
 class VehicleGetSchema(BaseModel):
@@ -28,7 +29,6 @@ class VehicleUpdateSchema(BaseModel):
     autobase_id: str | None = None
     status: str | None = None
     mileage: float | None = None
-
     model_config = ConfigDict(from_attributes=True)
 
 class VehicleDeleteSchema(BaseModel):
@@ -46,9 +46,45 @@ class VehicleResponseSchema1(BaseModel):
     autobase_id: str
     status: str
     mileage: float
-
     model_config = ConfigDict(from_attributes=True)
 
 class VehicleResponseSchema2(VehicleResponseSchema1): pass
 class VehicleResponseSchema3(VehicleResponseSchema1): pass
 class VehicleResponseSchema4(VehicleResponseSchema1): pass
+
+# --- Дополнительные схемы для расширенных endpoint-ов ---
+
+# /vehicle/list и /vehicle/search
+VehicleListSchema = List[VehicleResponseSchema1]
+
+# /vehicle/history/{vehicle_id}
+class VehicleHistoryEventSchema(BaseModel):
+    event: str
+    model_config = ConfigDict(from_attributes=True)
+
+VehicleHistoryResponseSchema = List[VehicleHistoryEventSchema]
+
+# /vehicle/assign-driver/{vehicle_id}
+class AssignDriverRequestSchema(BaseModel):
+    driver_id: str
+    model_config = ConfigDict(from_attributes=True)
+
+class AssignDriverResponseSchema(BaseModel):
+    success: bool
+    message: str
+    model_config = ConfigDict(from_attributes=True)
+
+# /vehicle/mileage/{vehicle_id}
+class VehicleMileageResponseSchema(BaseModel):
+    vehicle_id: str
+    mileage: float
+    model_config = ConfigDict(from_attributes=True)
+
+# /vehicle/analytics
+class FleetAnalyticsResponseSchema(BaseModel):
+    avg_mileage: float
+    max_mileage: float
+    total_fuel_cost: float
+    vehicles_in_service: int
+    vehicles_under_repair: int
+    model_config = ConfigDict(from_attributes=True)

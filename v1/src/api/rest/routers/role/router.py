@@ -1,4 +1,4 @@
-from fastapi import Depends, Body, APIRouter, Query
+from fastapi import Depends, Body, APIRouter, Query, Path
 
 from v1.src.api.rest.api_route_factory import api_get, api_post, api_put, api_delete
 from v1.src.api.rest.exceptions.raisers import raise_500, raise_404
@@ -9,10 +9,14 @@ from v1.src.app.utils.mapper import pydantic_to_dto
 
 from v1.src.api.rest.routers.role.schemas import (
     RoleCreateSchema, RoleGetSchema, RoleUpdateSchema, RoleDeleteSchema,
-    RoleResponseSchema1, RoleResponseSchema2, RoleResponseSchema3, RoleResponseSchema4
+    RoleResponseSchema1, RoleResponseSchema2, RoleResponseSchema3, RoleResponseSchema4,
+    RoleListSchema, RoleNameCheckSchema, RoleNameCheckResponseSchema,
+    RoleBatchCreateSchema, RoleUsersListSchema, RoleUsersResponseSchema
 )
 
 router = APIRouter(prefix="/role", tags=["Role"])
+
+# --- CRUD ---
 
 @api_post(router, "", RoleResponseSchema1, summary="Создать роль")
 async def create_role(
@@ -65,3 +69,40 @@ async def delete_role(
         return result
     except Exception as e:
         raise_500(data={"errors": str(e)})
+
+# --- Дополнительные endpoint-ы ---
+
+@api_get(router, "/list", RoleListSchema, summary="Список всех ролей")
+async def list_roles():
+    # Заглушка: 3 фейковые роли
+    return [
+        RoleResponseSchema1(id=1, name="admin", description="Администратор"),
+        RoleResponseSchema1(id=2, name="manager", description="Менеджер"),
+        RoleResponseSchema1(id=3, name="driver", description="Водитель"),
+    ]
+
+@api_post(router, "/batch", RoleListSchema, summary="Массовое создание ролей")
+async def batch_create_roles(
+    data: RoleBatchCreateSchema = Body(...),
+):
+    return [
+        RoleResponseSchema1(id=idx+100, name=role.name, description=role.description)
+        for idx, role in enumerate(data.roles)
+    ]
+
+@api_get(router, "/check-name", RoleNameCheckResponseSchema, summary="Проверить уникальность имени роли")
+async def check_role_name(
+    data: RoleNameCheckSchema = Depends(),
+):
+    # Заглушка: любое имя, кроме "admin", уникально
+    return RoleNameCheckResponseSchema(is_unique=(data.name != "admin"))
+
+@api_get(router, "/{role_id}/users", RoleUsersListSchema, summary="Список пользователей с ролью")
+async def get_role_users(
+    role_id: int = Path(...),
+):
+    # Заглушка: всегда 2 пользователя
+    return [
+        RoleUsersResponseSchema(user_id="u1001", email="ivan@test.ru", full_name="Иван Иванов"),
+        RoleUsersResponseSchema(user_id="u1002", email="petr@test.ru", full_name="Пётр Петров"),
+    ]
