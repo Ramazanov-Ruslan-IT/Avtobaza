@@ -105,9 +105,9 @@
     |   |   |   |   __init__.py
     |   |   |   |   
     |   |   |   +---example
-    |   |   |       |   abs_repo.py
+    |   |   |       |   abs_service.py
     |   |   |       |   dependencies.py
-    |   |   |       |   repo.py
+    |   |   |       |   service.py
     |   |   |       |   __init__.py
     |   |   |
     |   |   |           

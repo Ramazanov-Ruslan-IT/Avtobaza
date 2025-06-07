@@ -1,0 +1,2 @@
+from v1.src.app.services.gas_station_contract.service import AbsGasStationContractService
+from v1.src.app.services.gas_station_contract.dependencies import build_gas_station_contract_service
