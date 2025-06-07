@@ -14,3 +14,8 @@ class RoleOrm(BaseOrm):
     description: Mapped[str] = mapped_column(Text)
 
     users = relationship("UserOrm", back_populates="role")
+
+    __table_args__ = (
+        # Уникальность по названию роли — двух одинаковых быть не должно
+        UniqueConstraint("name", name="uq_role_name"),
+    )

@@ -10,7 +10,14 @@ class AutobaseOrm(BaseOrm):
     __tablename__ = "autobases"
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
-    name: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String, index=True)
     address: Mapped[str] = mapped_column(Text)
-    latitude: Mapped[float] = mapped_column(Float)
-    longitude: Mapped[float] = mapped_column(Float)
+    latitude: Mapped[float] = mapped_column(Float, index=True)
+    longitude: Mapped[float] = mapped_column(Float, index=True)
+
+    __table_args__ = (
+        # Уникальное ограничение: нельзя создать две базы с одинаковым названием и адресом
+        UniqueConstraint("name", "address", name="uq_autobase_name_address"),
+        # Индекс для быстрого поиска по геокоординатам (например, в радиусе/на карте)
+        Index("ix_autobase_coords", "latitude", "longitude"),
+    )

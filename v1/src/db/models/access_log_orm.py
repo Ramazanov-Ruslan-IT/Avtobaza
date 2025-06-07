@@ -12,8 +12,18 @@ class AccessLogOrm(BaseOrm):
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
-    login_time: Mapped[datetime] = mapped_column(DateTime)
+    login_time: Mapped[datetime] = mapped_column(DateTime, index=True)
     logout_time: Mapped[datetime] = mapped_column(DateTime)
-    ip_address: Mapped[str] = mapped_column(String)
+    ip_address: Mapped[str] = mapped_column(String, index=True)
     user_agent: Mapped[str] = mapped_column(String)
-    successful: Mapped[bool] = mapped_column(Boolean)
+    successful: Mapped[bool] = mapped_column(Boolean, index=True)
+
+    __table_args__ = (
+        # Композитный индекс: быстрый поиск всех попыток авторизации пользователя за период с конкретного IP
+        Index("ix_access_logs_userid_ip", "user_id", "ip_address"),
+        # Композитный индекс: все входы/выходы пользователя по успешности за период (для анализа атак/подбора)
+        Index("ix_access_logs_user_successful", "user_id", "successful", "login_time"),
+        # Частичный индекс (PostgreSQL): ускоряет анализ неудачных попыток входа (попытки взлома)
+        Index("ix_access_logs_failed_logins", "user_id", "login_time",
+              postgresql_where=(successful == False)),
+    )

@@ -10,7 +10,12 @@ class SupplierOrm(BaseOrm):
     __tablename__ = "suppliers"
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
-    name: Mapped[str] = mapped_column(String)
-    contact_email: Mapped[str] = mapped_column(String)
-    phone: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String, index=True)
+    contact_email: Mapped[str] = mapped_column(String, index=True)
+    phone: Mapped[str] = mapped_column(String, index=True)
     address: Mapped[str] = mapped_column(Text)
+
+    __table_args__ = (
+        # Уникальный поставщик по имени и email (или только по email, если email уникален)
+        UniqueConstraint("name", "contact_email", name="uq_supplier_name_email"),
+    )

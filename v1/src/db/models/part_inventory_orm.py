@@ -11,11 +11,18 @@ class PartInventoryOrm(BaseOrm):
     __tablename__ = "parts_inventory"
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
-    name: Mapped[str] = mapped_column(String)
-    part_number: Mapped[str] = mapped_column(String)
-    category: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String, index=True)  # поиск по наименованию
+    part_number: Mapped[str] = mapped_column(String, index=True)  # уникальный номер детали
+    category: Mapped[str] = mapped_column(String, index=True)
     unit: Mapped[str] = mapped_column(String)
     quantity: Mapped[int] = mapped_column(Integer)
     reorder_threshold: Mapped[int] = mapped_column(Integer)
-    last_updated: Mapped[datetime] = mapped_column(DateTime)
-    supplier_id: Mapped[str] = mapped_column(ForeignKey("suppliers.id"))
+    last_updated: Mapped[datetime] = mapped_column(DateTime, index=True)
+    supplier_id: Mapped[str] = mapped_column(ForeignKey("suppliers.id"), index=True)
+
+    __table_args__ = (
+        # Уникальность детали по номеру и поставщику (или по номеру в целом, если он глобальный)
+        UniqueConstraint("part_number", "supplier_id", name="uq_part_partnumber_supplier"),
+        # Индекс для быстрого поиска дефицитных запчастей по категории и количеству
+        Index("ix_parts_category_quantity", "category", "quantity"),
+    )

@@ -11,8 +11,15 @@ class UserOrm(BaseOrm):
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
     email: Mapped[str] = mapped_column(String, index=True)
-    full_name: Mapped[str] = mapped_column(String)
+    full_name: Mapped[str] = mapped_column(String, index=True)
     password_hash: Mapped[str] = mapped_column(String)
     role_id: Mapped[int] = mapped_column(ForeignKey("roles.id"), index=True)
 
     role = relationship("RoleOrm", back_populates="users")
+
+    __table_args__ = (
+        # Email всегда должен быть уникален — это логин и идентификатор в системе
+        UniqueConstraint("email", name="uq_user_email"),
+        # Индекс на role_id для быстрого поиска всех пользователей определённой роли
+        Index("ix_users_role_id", "role_id"),
+    )

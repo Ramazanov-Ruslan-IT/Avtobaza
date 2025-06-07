@@ -11,7 +11,14 @@ class StorageFuelOrm(BaseOrm):
     __tablename__ = "storage_fuel"
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
-    autobase_id: Mapped[str] = mapped_column(ForeignKey("autobases.id"))
-    fuel_type_id: Mapped[int] = mapped_column(ForeignKey("fuel_types.id"))
+    autobase_id: Mapped[str] = mapped_column(ForeignKey("autobases.id"), index=True)
+    fuel_type_id: Mapped[int] = mapped_column(ForeignKey("fuel_types.id"), index=True)
     litres: Mapped[float] = mapped_column(Float)
-    last_updated: Mapped[datetime] = mapped_column(DateTime)
+    last_updated: Mapped[datetime] = mapped_column(DateTime, index=True)
+
+    __table_args__ = (
+        # Уникальность по складу (автобазе) и типу топлива: в любой момент только одна актуальная запись по остатку
+        UniqueConstraint("autobase_id", "fuel_type_id", name="uq_storagefuel_autobase_fueltype"),
+        # Композитный индекс для быстрой аналитики остатков по складу и виду топлива
+        Index("ix_storagefuel_autobase_fueltype", "autobase_id", "fuel_type_id"),
+    )

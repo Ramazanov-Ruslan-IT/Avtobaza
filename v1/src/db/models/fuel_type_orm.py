@@ -10,6 +10,13 @@ class FuelTypeOrm(BaseOrm):
     __tablename__ = "fuel_types"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(String)
-    octane_rating: Mapped[int] = mapped_column(Integer)
-    is_diesel: Mapped[bool] = mapped_column(Boolean)
+    name: Mapped[str] = mapped_column(String, index=True)
+    octane_rating: Mapped[int] = mapped_column(Integer, index=True)
+    is_diesel: Mapped[bool] = mapped_column(Boolean, index=True)
+
+    __table_args__ = (
+        # Гарантирует, что не будет дубля по названию и октановому числу
+        UniqueConstraint("name", "octane_rating", name="uq_fueltype_name_octane"),
+        # Индекс для поиска всех типов топлива по дизельности и октановому числу
+        Index("ix_fueltype_diesel_octane", "is_diesel", "octane_rating"),
+    )
