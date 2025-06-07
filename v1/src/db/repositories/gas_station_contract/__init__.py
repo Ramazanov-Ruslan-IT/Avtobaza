@@ -1,0 +1,2 @@
+from v1.src.db.repositories.gas_station_contract.abs_repo import AbsGasStationContractRepo
+from v1.src.db.repositories.gas_station_contract.dependencies import get_gas_station_contract_repo
