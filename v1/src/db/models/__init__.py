@@ -2,7 +2,7 @@ from .base_orm import BaseOrm
 from .maintenance_log_orm import MaintenanceLogOrm
 from .access_log_orm import AccessLogOrm
 from .audit_log_orm import AuditLogOrm
-from autobase_orm import AutobaseOrm
+from .autobase_orm import AutobaseOrm
 from .document_orm import DocumentOrm
 from .efficiency_metric_orm import EfficiencyMetricOrm
 from .financial_transaction_orm import FinancialTransactionOrm
