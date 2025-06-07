@@ -1,0 +1,2 @@
+from v1.src.db.repositories.financial_transaction.abs_repo import AbsFinancialTransactionRepo
+from v1.src.db.repositories.financial_transaction.dependencies import get_financial_transaction_repo
