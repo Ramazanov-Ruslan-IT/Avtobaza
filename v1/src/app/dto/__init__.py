@@ -7,8 +7,8 @@ from .efficiency_metric import EfficiencyMetricDTO
 from .financial_transaction import FinancialTransactionDTO
 from .fuel_type import FuelTypeDTO
 from .gas_station import GasStationDTO
-from .gas_station_contract_orm import GasStationContractDTO
-from .gas_station_fuel_orm import GasStationFuelDTO
+from .gas_station_contract import GasStationContractDTO
+from .gas_station_fuel import GasStationFuelDTO
 from .gps_track import GpsTrackDTO
 from .maintenance_log import MaintenanceLogDTO
 from .ml_suggestion import MlSuggestionDTO
