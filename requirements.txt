@@ -1,0 +1,31 @@
+# FastAPI и сервер Uvicorn
+fastapi
+uvicorn
+
+# Асинхронная работа с БД и Redis
+redis==5.2.1
+sqlalchemy
+asyncpg==0.30.0
+
+requests
+# JWT-токены и безопасность
+pyjwt
+bcrypt
+passlib
+
+# Kafka для асинхронной коммуникации
+aiokafka
+
+# Двухфакторная аутентификация (2FA)
+pyotp
+qrcode
+
+# Дополнительные библиотеки
+python-dotenv
+pydantic
+pydantic[email]
+pydantic_core
+pydantic-settings
+starlette
+httpx
+uv
